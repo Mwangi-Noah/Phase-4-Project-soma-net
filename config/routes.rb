@@ -1,25 +1,24 @@
 Rails.application.routes.draw do
-  get 'books/index'
-  get 'books/create'
-  get 'books/search'
+  resources :books, only: [:index, :create, :show] do
+    resources :messages, only: [:index, :create]
+    resources :comments, only: [:create, :update, :destroy] do
+      member do
+        post 'upvote'
+        post 'downvote'
+      end
+      resources :replies, only: [:create, :update, :destroy]
+    end
+
+    collection do
+      get 'search'
+      post 'search'
+    end
+  end
 
   post '/register', to: 'users#register'
   post '/login', to: 'users#login'
   delete '/logout', to: 'users#logout'
   get '/dashboard', to: 'users#dashboard'
+  get '/me', to: 'users#show'
   patch '/dashboard', to: 'users#update_dashboard'
-
-  resources :replies, only: [:create, :update, :destroy]
-
-
-  resources :comments, only: [:create, :update, :destroy] do
-    member do
-      post 'upvote'
-      post 'downvote'
-    end
-  end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

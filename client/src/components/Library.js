@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-`;
+import './library.css';
 
 const Library = () => {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  
 
   useEffect(() => {
     fetchBooks();
@@ -19,7 +14,7 @@ const Library = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch('/api/books');
+      const response = await fetch('/books');
       if (response.ok) {
         const data = await response.json();
         setBooks(data);
@@ -42,7 +37,7 @@ const Library = () => {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('/api/books/search', {
+      const response = await fetch('/books/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: searchTerm }),
@@ -62,7 +57,7 @@ const Library = () => {
     const { title, authors, description } = book;
 
     try {
-      const response = await fetch('/api/books', {
+      const response = await fetch('/books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -84,7 +79,7 @@ const Library = () => {
   };
 
   return (
-    <Container>
+    <div className="library-container">
       <h2>Library</h2>
       <form onSubmit={handleSearchSubmit}>
         <input type="text" value={searchTerm} onChange={handleSearchInputChange} placeholder="Search by book or author" />
@@ -93,8 +88,10 @@ const Library = () => {
       {searchResults.length > 0 && (
         <div>
           <h3>Search Results</h3>
+          
           {searchResults.map((result) => (
             <div key={result.id}>
+              {result.thumbnail && <img src={result.thumbnail} alt="Book Cover" />}              
               <h4>{result.title}</h4>
               <p>{result.authors ? result.authors.join(', ') : 'Unknown'}</p>
               <p>{result.description}</p>
@@ -118,7 +115,7 @@ const Library = () => {
           <p>{selectedBook.description}</p>
         </div>
       )}
-    </Container>
+    </div>
   );
 };
 

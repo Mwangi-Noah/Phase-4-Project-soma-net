@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './auth.css';
 
-const Auth = ({ onLogin }) => {
+
+const Register = ({ onRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,11 +13,11 @@ const Auth = ({ onLogin }) => {
     setPassword(e.target.value);
   };
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/users/login', {
+      const response = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -26,10 +25,10 @@ const Auth = ({ onLogin }) => {
       });
 
       if (response.ok) {
-        // Handle successful login
-        onLogin();
+        // Handle successful registration
+        onRegister();
       } else {
-        console.error('Login failed');
+        console.error('Registration failed');
       }
     } catch (error) {
       console.error(error);
@@ -38,8 +37,8 @@ const Auth = ({ onLogin }) => {
 
   return (
     <div className="container">
-      <h2>Login</h2>
-      <form className="form" onSubmit={handleLogin}>
+      <h2>Register</h2>
+      <form className="form" onSubmit={handleRegister}>
         <input
           type="email"
           className="input"
@@ -56,11 +55,10 @@ const Auth = ({ onLogin }) => {
           onChange={handlePasswordChange}
           required
         />
-        <button type="submit" className="button">Login</button>
+        <button type="submit" className="button">Register</button>
       </form>
-      <p>Don't have an account? <Link to="/register">Register</Link></p>
     </div>
   );
 };
 
-export default Auth;
+export default Register;

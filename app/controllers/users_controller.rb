@@ -1,5 +1,11 @@
 class UsersController < ApplicationController
     before_action :authorize, only: [:dashboard, :update_dashboard]
+
+    def show
+      render json: @user
+    rescue ActiveRecord::RecordNotFound
+      user_not_found
+    end
   
     def register
       user = User.new(user_params)
@@ -58,6 +64,10 @@ class UsersController < ApplicationController
   
     def user_params
       params.permit(:email, :password)
+    end
+    
+    def user_not_found
+      render json: { error: 'User not found' }, status: :not_found
     end
   
     def user_dashboard_params

@@ -19,17 +19,32 @@ class BooksController < ApplicationController
   def search
     query = params[:query]
     search_results = search_books(query)
-    render json: search_results, status: :ok
+    serialized_results = serialize_search_results(search_results)
+    render json: serialized_results, status: :ok
   end
-
+  
   private
+  
+  def serialize_search_results(results)
+    results.map do |result|
+      {
+        id: result['id'],
+        title: result['volumeInfo']['title'],
+        authors: result['volumeInfo']['authors'] || ['Unknown'],
+        description: result['volumeInfo']['description'],
+        thumbnail: result['volumeInfo']['imageLinks']&.fetch('smallThumbnail', '')
+      }
+    end
+  end
 
   def book_params
     params.require(:book).permit(:title, :author, :description)
   end
 
   def search_books(query)
-    url = "https://www.googleapis.com/books/v1/volumes?q=#{URI.encode(query)}"
+    api_key = 'AIzaSyCzEJJwYQ5JaQJ1zIHKOGqpXLqFkffsw1k'
+    encoded_query = URI.encode_www_form_component(query)
+    url = "https://www.googleapis.com/books/v1/volumes?q=#{encoded_query}&key=#{api_key}"
     uri = URI(url)
     response = Net::HTTP.get(uri)
     data = JSON.parse(response)

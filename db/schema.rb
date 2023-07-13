@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_043439) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_063338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +33,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_043439) do
     t.integer "upvotes"
     t.index ["book_id"], name: "index_comments_on_book_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "timestamp"
+    t.index ["book_id"], name: "index_messages_on_book_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -65,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_043439) do
 
   add_foreign_key "comments", "books"
   add_foreign_key "comments", "users"
+  add_foreign_key "messages", "books"
+  add_foreign_key "messages", "users"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
   add_foreign_key "replies", "comments"

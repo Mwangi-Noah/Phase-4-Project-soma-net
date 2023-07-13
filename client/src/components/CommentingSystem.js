@@ -11,7 +11,7 @@ const CommentingSystem = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch('/api/comments');
+      const response = await fetch('/comments');
       if (response.ok) {
         const data = await response.json();
         setComments(data);
@@ -31,7 +31,7 @@ const CommentingSystem = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/comments', {
+      const response = await fetch('/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: commentText }),
@@ -51,7 +51,7 @@ const CommentingSystem = () => {
 
   const handleUpvote = async (commentId) => {
     try {
-      const response = await fetch(`/api/comments/${commentId}/upvote`, {
+      const response = await fetch(`/comments/${commentId}/upvote`, {
         method: 'POST',
       });
   
@@ -68,7 +68,7 @@ const CommentingSystem = () => {
   
   const handleDownvote = async (commentId) => {
     try {
-      const response = await fetch(`/api/comments/${commentId}/downvote`, {
+      const response = await fetch(`/comments/${commentId}/downvote`, {
         method: 'POST',
       });
   

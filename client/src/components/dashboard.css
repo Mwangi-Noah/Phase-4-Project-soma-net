@@ -1,0 +1,47 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+  }
+  
+  .profile-picture-container {
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .profile-picture-input {
+    margin-bottom: 10px;
+  }
+  
+  .profile-picture-upload-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .user-info {
+    margin-bottom: 10px;
+  }
+  
+  .user-info-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 100px;
+  }

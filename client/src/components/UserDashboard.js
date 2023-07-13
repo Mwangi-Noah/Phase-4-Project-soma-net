@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-`;
+import './dashboard.css';
 
 const UserDashboard = () => {
   const [user, setUser] = useState(null);
@@ -18,7 +12,7 @@ const UserDashboard = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch('/api/users/me', {
+      const response = await fetch('/me', {
         method: 'GET',
         credentials: 'include',
       });
@@ -45,7 +39,7 @@ const UserDashboard = () => {
         const formData = new FormData();
         formData.append('profile_picture', profilePicture);
 
-        const response = await fetch('/api/users/me', {
+        const response = await fetch('/users/me', {
           method: 'PATCH',
           credentials: 'include',
           body: formData,
@@ -65,31 +59,31 @@ const UserDashboard = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="container loading">Loading...</div>;
   }
 
   return (
-    <Container>
+    <div className="container">
       <h2>User Dashboard</h2>
       {user && (
         <>
-          <div>
-            <label htmlFor="profilePicture">Profile Picture:</label>
-            <input type="file" id="profilePicture" accept="image/*" onChange={handleProfilePictureChange} />
-            <button onClick={handleProfilePictureUpload}>Upload</button>
+          <div className="profile-picture-container">
+            <label className="profile-picture-label" htmlFor="profilePicture">Profile Picture:</label>
+            <input className="profile-picture-input" type="file" id="profilePicture" accept="image/*" onChange={handleProfilePictureChange} />
+            <button className="profile-picture-upload-button" onClick={handleProfilePictureUpload}>Upload</button>
           </div>
-          <div>
-            <label>Name:</label>
+          <div className="user-info">
+            <label className="user-info-label">Name:</label>
             <span>{user.name}</span>
           </div>
-          <div>
-            <label>Email:</label>
+          <div className="user-info">
+            <label className="user-info-label">Email:</label>
             <span>{user.email}</span>
           </div>
           {/* Add other user information fields as needed */}
         </>
       )}
-    </Container>
+    </div>
   );
 };
 
